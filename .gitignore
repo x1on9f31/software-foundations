@@ -1,0 +1,29 @@
+# Compiled files
+*.vo
+*.vos
+*.vok
+*.glob
+
+# Cache files
+.lia.cache
+
+# Log files
+*.v.d
+
+# Auxiliary and generated files from Coq
+.coq-native/
+.coqdeps.d
+.coqdeps
+
+# Directory for compiled libraries
+_build/
+_build.log
+
+# Backup files created by editors
+*~
+.*.aux
+.*~
+
+# Specific to Emacs users
+*.elc
+auto/
