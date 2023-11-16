@@ -800,13 +800,16 @@ Fixpoint exp (base power : nat) : nat :=
     factorial was not found in the current environment," it means
     you've forgotten the [:=]. *)
 
-Fixpoint factorial (n:nat) : nat 
-. Admitted.
+Fixpoint factorial (n:nat) : nat :=
+  match n with
+  | O => S O
+  | S n' => mult n (factorial n')
+  end.
 
 Example test_factorial1:          (factorial 3) = 6.
-Admitted.
+Proof. simpl. reflexivity.  Qed.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-Admitted.
+Proof. simpl. reflexivity.  Qed.
 (** [] *)
 
 (** Again, we can make numerical expressions easier to read and write
@@ -814,7 +817,7 @@ Admitted.
     multiplication. *)
 
 Notation "x + y" := (plus x y)
-                       (at level 50, left associativity)
+                       (at slevel 50, left associativity)
                        : nat_scope.
 Notation "x - y" := (minus x y)
                        (at level 50, left associativity)
