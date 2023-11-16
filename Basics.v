@@ -331,13 +331,13 @@ Definition nandb (b1:bool) (b2:bool) : bool :=
   end.
 
 Example test_nandb1:               (nandb true false) = true.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_nandb2:               (nandb false false) = true.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_nandb3:               (nandb false true) = true.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_nandb4:               (nandb true true) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard (andb3)
@@ -353,13 +353,13 @@ Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool :=
   end.
 
 Example test_andb31:                 (andb3 true true true) = true.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_andb32:                 (andb3 false true true) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_andb33:                 (andb3 true false true) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_andb34:                 (andb3 true true false) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -802,14 +802,14 @@ Fixpoint exp (base power : nat) : nat :=
 
 Fixpoint factorial (n:nat) : nat :=
   match n with
-  | O => S O
+  | O => (S 0)
   | S n' => mult n (factorial n')
   end.
 
 Example test_factorial1:          (factorial 3) = 6.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (** Again, we can make numerical expressions easier to read and write
@@ -817,7 +817,7 @@ Proof. simpl. reflexivity.  Qed.
     multiplication. *)
 
 Notation "x + y" := (plus x y)
-                       (at slevel 50, left associativity)
+                       (at level 50, left associativity)
                        : nat_scope.
 Notation "x - y" := (minus x y)
                        (at level 50, left associativity)
@@ -908,11 +908,11 @@ Definition ltb (n m : nat) : bool :=
 Notation "x <? y" := (ltb x y) (at level 70) : nat_scope.
 
 Example test_ltb1:             (ltb 2 2) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_ltb2:             (ltb 2 4) = true.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 Example test_ltb3:             (ltb 4 2) = false.
-Proof. simpl. reflexivity.  Qed.
+Proof. simpl. reflexivity. Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -1073,7 +1073,12 @@ Proof.
 Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m o.
+  intros P.
+  intros Q.
+  rewrite -> P.
+  rewrite <- Q.
+  reflexivity. Qed.
 (** [] *)
 
 (** The [Admitted] command tells Coq that we want to skip trying
