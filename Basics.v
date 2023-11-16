@@ -1074,8 +1074,7 @@ Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
   intros n m o.
-  intros P.
-  intros Q.
+  intros P Q.
   rewrite -> P.
   rewrite <- Q.
   reflexivity. Qed.
