@@ -1129,8 +1129,8 @@ Theorem mult_n_1 : forall p : nat,
   p * 1 = p.
 Proof.
   intros p.
-  rewrite <- mult_n_Sm.
-  rewrite <- mult_n_O.
+  rewrite <- mult_n_Sm. (* substitute `p * (S O)` with p * O + p*)
+  rewrite <- mult_n_O. (* substitute `p * O` with O *)
   reflexivity. Qed.
 
 (** [] *)
