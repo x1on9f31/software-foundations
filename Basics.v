@@ -1331,7 +1331,7 @@ Qed.
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
 (** [] *)
 
 (** Before closing the chapter, let's mention one final
@@ -1353,7 +1353,8 @@ Theorem plus_1_neq_0' : forall n : nat,
 Proof.
   intros [|n].
   - reflexivity.
-  - reflexivity.  Qed.
+  - reflexivity.  
+Qed.
 
 (** If there are no constructor arguments that need names, we can just
     write [[]] to get the case analysis. *)
@@ -1372,7 +1373,10 @@ Qed.
 Theorem zero_nbeq_plus_1 : forall n : nat,
   0 =? (n + 1) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros [|n].
+  - reflexivity.
+  - reflexivity.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
