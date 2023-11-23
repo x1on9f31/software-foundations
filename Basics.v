@@ -1331,7 +1331,12 @@ Qed.
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-Admitted.
+intros [] [].
+  - reflexivity.
+  - intros H. rewrite <- H. reflexivity.
+  - reflexivity.
+  - intros H. rewrite <- H. reflexivity.
+Qed.
 (** [] *)
 
 (** Before closing the chapter, let's mention one final
@@ -1496,6 +1501,20 @@ Qed.
     Now state and prove a theorem [negation_fn_applied_twice] similar
     to the previous one but where the second hypothesis says that the
     function [f] has the property that [f x = negb x]. *)
+Theorem negation_fn_applied_twice : 
+  forall (f: bool -> bool),
+  (forall (x : bool), f x = negb x) ->
+  forall (b : bool), f (f b) = b.
+Proof.
+  intros f.
+  intros H.
+  intros b.
+  rewrite -> H. rewrite -> H. rewrite -> negb_involutive.
+  reflexivity.
+  (* destruct b. (* there are two cases of b as a `bool`*)
+    + reflexivity.
+    + reflexivity.  *)
+Qed.
 
 (* FILL IN HERE *)
 
@@ -1517,7 +1536,7 @@ Theorem andb_eq_orb :
   (andb b c = orb b c) ->
   b = c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
 
 (** [] *)
 
@@ -1864,7 +1883,32 @@ Theorem lower_grade_lowers :
     grade_comparison (Grade F Minus) g = Lt ->
     grade_comparison (lower_grade g) g = Lt.
 Proof.
-  (* FILL IN HERE *) Admitted.
+(* Original solution. *)
+intros g H.
+destruct g as [l m].
+- destruct l.
+  + destruct m.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+  + destruct m.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+  + destruct m.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+  + destruct m.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+  + destruct m.
+    * simpl. reflexivity.
+    * simpl. reflexivity.
+    * rewrite -> lower_grade_F_Minus. rewrite -> H. reflexivity.
+Qed.
+
 
 (** [] *)
 
@@ -1920,7 +1964,11 @@ Theorem no_penalty_for_mostly_on_time :
     (late_days <? 9 = true) ->
     apply_late_policy late_days g = g.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros late_days g.
+intros H.
+rewrite -> apply_late_policy_unfold. rewrite -> H. reflexivity.
+Qed.
+
 
 (** [] *)
 
@@ -1935,7 +1983,10 @@ Theorem grade_lowered_once :
     (grade_comparison (Grade F Minus) g = Lt) ->
     (apply_late_policy late_days g) = (lower_grade g).
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros late_days g.
+intros H Q.
+rewrite -> apply_late_policy_unfold. rewrite -> H. rewrite -> Q. reflexivity.
+Qed.
 
 (** [] *)
 End LateDays.
