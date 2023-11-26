@@ -538,12 +538,19 @@ Definition manual_grade_for_eqb_refl_informal : option (nat*string) := None.
 Theorem add_shuffle3 : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-Admitted.
+  intros n m p.
+  assert (H: n + (m + p) = (n + m) + p).
+  { rewrite add_assoc. reflexivity. }
+  rewrite H. 
+  assert (H': n + m = m + n).
+  { rewrite add_comm. reflexivity. }
+  rewrite H'. rewrite add_assoc. reflexivity.
+Qed.
 
 (** Now prove commutativity of multiplication.  You will probably want
     to look for (or define and prove) a "helper" theorem to be used in
     the proof of this one. Hint: what is [n * (1 + k)]? *)
-
+(* TODO *)
 Theorem mul_comm : forall m n : nat,
   m * n = n * m.
 Proof.
@@ -639,7 +646,10 @@ Qed.
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
 Proof. (* prove by induction *)
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite IHn'. rewrite mult_plus_distr_r. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (add_shuffle3')
@@ -656,7 +666,13 @@ Proof. (* prove by induction *)
 Theorem add_shuffle3' : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  replace (n + (m + p)) with ((n + m) + p).
+  - simpl. rewrite add_assoc.
+  replace (n + m) with (m + n). reflexivity.
+  rewrite add_comm. reflexivity.
+  - rewrite add_assoc. reflexivity.
+Qed.
 (** [] *)
 
 (* ################################################################# *)
