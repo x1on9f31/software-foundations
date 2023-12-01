@@ -690,11 +690,19 @@ Inductive bin : Type :=
     from [Basics].  That will make it possible for this file to
     be graded on its own. *)
 
-Fixpoint incr (m:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint incr (m:bin) : bin :=
+  match m with
+  | Z => B1 Z
+  | B0 b' => B1 b'
+  | B1 b' => B0 (incr b')
+  end.
 
-Fixpoint bin_to_nat (m:bin) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint bin_to_nat (m:bin) : nat :=
+  match m with
+  | Z => 0
+  | B0 b' => 2 * (bin_to_nat b')
+  | B1 b' => 1 + 2 * (bin_to_nat b')
+  end.
 
 (** In [Basics], we did some unit testing of [bin_to_nat], but we
     didn't prove its correctness. Now we'll do so. *)
@@ -722,7 +730,11 @@ Fixpoint bin_to_nat (m:bin) : nat
 Theorem bin_to_nat_pres_incr : forall b : bin,
   bin_to_nat (incr b) = 1 + bin_to_nat b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction b as [| b0 IHb0 | b1 IHb1].
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+  - simpl. rewrite IHb1. simpl. rewrite <- plus_n_Sm. reflexivity.
+Qed.
 
 (** [] *)
 
@@ -730,8 +742,20 @@ Proof.
 
 (** Write a function to convert natural numbers to binary numbers. *)
 
-Fixpoint nat_to_bin (n:nat) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint nat_to_bin (n:nat) : bin :=
+  match n with
+  | O => Z
+  | S n' => incr (nat_to_bin n')
+  end.
+
+Example test_nat_to_bin1 : (nat_to_bin O) = Z.
+simpl. reflexivity. Qed.
+
+Example test_nat_to_bin2 : (nat_to_bin 2) = (B0 (B1 Z)).
+simpl. reflexivity. Qed.
+
+Example test_nat_to_bin3 : (nat_to_bin 8) = (B0 (B0 (B0 (B1 Z)))).
+simpl. reflexivity. Qed.
 
 (** Prove that, if we start with any [nat], convert it to [bin], and
     convert it back, we get the same [nat] which we started with.
@@ -745,7 +769,12 @@ Fixpoint nat_to_bin (n:nat) : bin
 
 Theorem nat_bin_nat : forall n, bin_to_nat (nat_to_bin n) = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - 
+  simpl. rewrite bin_to_nat_pres_incr. rewrite IHn'. 
+  rewrite plus_1_l. reflexivity.
+Qed.
 
 (** [] *)
 
@@ -770,24 +799,41 @@ Abort.
 
 Lemma double_incr : forall n : nat, double (S n) = S (S (double n)).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 
 (** Now define a similar doubling function for [bin]. *)
 
-Definition double_bin (b:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint double_helper (b : bin) : bin :=
+  match b with 
+  | Z => Z
+  | B0 b => B0 (double_helper b)
+  | B1 b => B0 (B1 (double_helper b))
+  end.
+
+Definition double_bin (b:bin) : bin :=
+  double_helper b.
+
 
 (** Check that your function correctly doubles zero. *)
 
 Example double_bin_zero : double_bin Z = Z.
-(* FILL IN HERE *) Admitted.
+simpl. reflexivity. Qed.
 
+Example double_bin_one : double_bin (B1 Z) = (B0 (B1 Z)).
+simpl. reflexivity. Qed.
+
+Example double_bin_two : double_bin (B0 (B1 Z)) = (B0 (B0 (B1 Z))).
+simpl. reflexivity. Qed.
 (** Prove this lemma, which corresponds to [double_incr]. *)
 
 Lemma double_incr_bin : forall b,
     double_bin (incr b) = incr (incr (double_bin b)).
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
+
 
 (** [] *)
 
