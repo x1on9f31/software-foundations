@@ -417,28 +417,31 @@ Proof. reflexivity. Qed.
     names to the arguments.  Implement [sum] in terms of an
     already-defined function, without changing the header. *)
 
-Definition sum : bag -> bag -> bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition sum : bag -> bag -> bag :=
+  alternate.
 
 Example test_sum1:              count 1 (sum [1;2;3] [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
-Definition add (v : nat) (s : bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition add (v : nat) (s : bag) : bag :=
+  v :: s.
 
 Example test_add1:                count 1 (add 1 [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 Example test_add2:                count 5 (add 1 [1;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
-Fixpoint member (v : nat) (s : bag) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint member (v : nat) (s : bag) : bool :=
+  match s with
+  | nil => false
+  | h :: t => if v =? h then true else member v t
+  end.
 
 Example test_member1:             member 1 [1;4;1] = true.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_member2:             member 2 [1;4;1] = false.
-(* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard, optional (bag_more_functions)
@@ -451,44 +454,55 @@ Example test_member2:             member 2 [1;4;1] = false.
     to fill in the definition of [remove_one] for a later
     exercise.) *)
 
-Fixpoint remove_one (v : nat) (s : bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint remove_one (v : nat) (s : bag) : bag :=
+  match s with
+  | nil => nil
+  | h :: t => if v =? h then t else h :: (remove_one v t)
+  end.
 
 Example test_remove_one1:
   count 5 (remove_one 5 [2;1;5;4;1]) = 0.
-  (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_remove_one2:
   count 5 (remove_one 5 [2;1;4;1]) = 0.
-  (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_remove_one3:
   count 4 (remove_one 5 [2;1;4;5;1;4]) = 2.
-  (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_remove_one4:
   count 5 (remove_one 5 [2;1;5;4;5;1;4]) = 1.
-  (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
-Fixpoint remove_all (v:nat) (s:bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint remove_all (v:nat) (s:bag) : bag :=
+  match s with
+  | nil => nil
+  | h :: t => if v =? h then remove_all v t else h :: (remove_all v t)
+  end.
+
 
 Example test_remove_all1:  count 5 (remove_all 5 [2;1;5;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 Example test_remove_all2:  count 5 (remove_all 5 [2;1;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 Example test_remove_all3:  count 4 (remove_all 5 [2;1;4;5;1;4]) = 2.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 Example test_remove_all4:  count 5 (remove_all 5 [2;1;5;4;5;1;4;5;1;4]) = 0.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
-Fixpoint included (s1 : bag) (s2 : bag) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint included (s1 : bag) (s2 : bag) : bool :=
+  match s1 with
+  | nil => true
+  | h :: t => if leb (count h s1) (count h s2) then (included t s2) else false
+  end.
+
 
 Example test_included1:              included [1;2] [2;1;4;1] = true.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 Example test_included2:              included [1;2;2] [2;1;4;1] = false.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, especially useful (add_inc_count)
@@ -501,6 +515,13 @@ Proof.
   ...
 Qed.
 *)
+
+Theorem add_inc_count : forall (v : nat) (b: bag),
+  length (add v b) = 1 + length b.
+Proof.
+  intros v b.
+  simpl. reflexivity.
+Qed.
 
 (* Do not modify the following line: *)
 Definition manual_grade_for_add_inc_count : option (nat*string) := None.
@@ -836,22 +857,26 @@ Search (?x + ?y = ?y + ?x).
 
     More practice with lists: *)
 
+
 Theorem app_nil_r : forall l : natlist,
   l ++ [] = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction l as [| n l' IHl'].
+  - simpl. reflexivity.
+  - simpl. rewrite IHl'. reflexivity.
+Qed.
 
 Theorem rev_app_distr: forall l1 l2 : natlist,
   rev (l1 ++ l2) = rev l2 ++ rev l1.
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
 
 (** An _involution_ is a function that is its own inverse. That is,
     applying the function twice yield the original input. *)
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
 
 (** There is a short solution to the next one.  If you find yourself
     getting tangled up, step back and try to look for a simpler
