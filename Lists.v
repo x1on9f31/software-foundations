@@ -360,7 +360,7 @@ Fixpoint alternate (l1 l2 : natlist) : natlist :=
   | nil, nil => nil
   | nil, l => l
   | l, nil => l
-  | h1::t1, h2::t2 => h1::h2::(alternate t1 t2)
+  | h1 :: t1, h2 :: t2 => h1 :: h2 :: (alternate t1 t2)
   end.
 
 Example test_alternate1:
