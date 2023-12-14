@@ -997,9 +997,7 @@ Qed.
     We can also define [map] in terms of [fold].  Finish [fold_map]
     below. *)
 
-(* this implementation take advantage of `partial implementation` feature
-
-*)
+(* this implementation take advantage of `partial implementation` feature *)
 Definition fold_map' {X Y: Type} (f: X -> Y) (l: list X) : list Y :=
   fold (fun h => cons (f h)) l []. 
 
