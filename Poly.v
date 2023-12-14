@@ -998,9 +998,10 @@ Qed.
     below. *)
 
 (* this implementation take advantage of `partial implementation` feature
-Definition fold_map {X Y: Type} (f: X -> Y) (l: list X) : list Y :=
-  fold (fun h => cons (f h)) l []. 
+
 *)
+Definition fold_map' {X Y: Type} (f: X -> Y) (l: list X) : list Y :=
+  fold (fun h => cons (f h)) l []. 
 
 (* the implementation below is the recommended solution, `acc` is a accumulator
  * parameter. 
