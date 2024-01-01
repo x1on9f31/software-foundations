@@ -1071,7 +1071,25 @@ Theorem All_In :
     (forall x, In x l -> P x) <->
     All P l.
 Proof.
-Admitted.
+  intros T P l. split.
+  {
+    induction l as [| h t IHt].
+    - reflexivity.
+    - simpl. intros H. split. 
+      + apply H. left. reflexivity.
+      + apply IHt. intros. apply H. right. apply H0.
+  }
+  {
+    induction l as [| h t].
+    - intros H. intros x. simpl. apply ex_falso_quodlibet.
+    - simpl. intros H. intros x.
+      + intros [HX | HIN].
+        * rewrite <- HX. apply H.
+        * apply IHt. 
+          -- apply H.
+          -- apply HIN.
+  }
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (combine_odd_even)
@@ -1814,9 +1832,24 @@ Definition tr_rev {X} (l : list X) : list X :=
 
     Prove that the two definitions are indeed equivalent. *)
 
+Lemma cons_eq_app: forall (X: Type) (hx x: X) (tx : list X),
+  [x;hx] = [x] ++ [hx].
+Proof.
+  intros.
+  reflexivity.
+Qed.
+
 Theorem tr_rev_correct : forall X, @tr_rev X = @rev X.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros X.
+  apply functional_extensionality. intros l.
+  induction l as [| h t].
+  - reflexivity.
+  - simpl. rewrite <- IHt. unfold tr_rev.
+    simpl. unfold rev_append. destruct t.
+    + reflexivity.
+    + 
+Admitted.
 (** [] *)
 
 (* ================================================================= *)
