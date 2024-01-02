@@ -856,7 +856,11 @@ Qed.
 (** **** Exercise: 3 stars, standard, optional (leb_plus_exists) *)
 Theorem leb_plus_exists : forall n m, n <=? m = true -> exists x, m = n+x.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros n m H.
+  destruct n as [| n'].
+  - exists m. reflexivity.
+  - exists (m - S n').
+Admitted.
 
 Theorem plus_exists_leb : forall n m, (exists x, m = n+x) -> n <=? m = true.
 Proof.
@@ -1082,12 +1086,11 @@ Proof.
   {
     induction l as [| h t].
     - intros H. intros x. simpl. apply ex_falso_quodlibet.
-    - simpl. intros H. intros x.
-      + intros [HX | HIN].
-        * rewrite <- HX. apply H.
-        * apply IHt. 
-          -- apply H.
-          -- apply HIN.
+    - intros. simpl in H0. simpl in H.
+      destruct H as [PH APT].
+      destruct H0 as [HX | IXT].
+      * rewrite <- HX. apply PH.
+      * apply IHt. apply APT. apply IXT.
   }
 Qed.
 (** [] *)
