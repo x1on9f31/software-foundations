@@ -1642,9 +1642,35 @@ Qed.
 Qed.
 *)
 
+Lemma eqb_false_helper : forall n m : nat,
+  n <> m -> S n <> S m.
+Proof.
+  intros n m. unfold not.
+  intros H. intros H0. injection H0. apply H.
+Qed.
+
 Theorem eqb_neq : forall x y : nat,
   x =? y = false <-> x <> y.
 Proof.
+  intros x. split.  (* unfold not will change `=?` to `=  -> False` *)
+  generalize dependent y.
+  {
+    induction x as [| x'].
+    - simpl. destruct y.
+      + discriminate.
+      + discriminate.
+    - destruct y. 
+      + discriminate.
+      + intros H. apply IHx' in H. apply eqb_false_helper in H. apply H.
+  }
+  { (* <- *)
+    induction x as [| x']. destruct y.
+    - 
+      + intros H. contradiction.
+    - 
+      + intros. reflexivity.
+    - 
+  }
 Admitted.
 
 
@@ -1993,7 +2019,11 @@ Qed.
 Theorem excluded_middle_irrefutable: forall (P : Prop),
   ~ ~ (P \/ ~ P).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P. unfold not.
+  intros H. apply H. 
+  right. intros. 
+  apply H. left. apply H0.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (not_exists_dist)
@@ -2014,7 +2044,8 @@ Theorem not_exists_dist :
   forall (X:Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> (forall x, P x).
 Proof.
-  (* FILL IN HERE *) Admitted.
+Admitted.
+
 (** [] *)
 
 (** **** Exercise: 5 stars, standard, optional (classical_axioms)
