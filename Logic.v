@@ -2039,12 +2039,19 @@ Qed.
     in constructive logic. Your job is to show that it is implied by
     the excluded middle. *)
 
+(* chatGPT给的答案 *)
 Theorem not_exists_dist :
   excluded_middle ->
   forall (X:Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> (forall x, P x).
 Proof.
-Admitted.
+  unfold excluded_middle.
+  intros. unfold not in H0. 
+  assert (HO: P x \/ ~ P x) by apply H.
+  destruct HO as [PX | NPX].
+    - apply PX.
+    - apply ex_falso_quodlibet. apply H0. exists x. apply NPX.
+Qed.
 
 (** [] *)
 
